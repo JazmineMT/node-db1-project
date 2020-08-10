@@ -7,10 +7,10 @@ const db = require("./data/dbConfig");
 router.get('/', (req,res)=> {
     db('accounts')
     .then( accounts => {
-        res.json(accounts)
+        res.status(200).json(accounts)
     })
     .catch( err => {
-        res.status(500).json({ message: 'Failed to get accoutns'})
+        res.status(500).json({ error : err.message})
     })
 
 })
@@ -21,23 +21,23 @@ router.get('/:id', (req, res)=> {
     db('accounts').where({id})
     .then( account => {
         if(account.length){
-            res.json(account)
+            res.status(200).json(account)
         } else {
             res.status(404).json({ message: 'Could not find user with that ID'})
         }
     })
     .catch( err => {
-        res.status(500).json({ message: 'Failed to get account'})
+        res.status(500).json({ error : err.message})
     })
 })
 
 router.post('/', (req, res)=> {
     db('accounts').insert(req.body)
     .then( newAccount => {
-        res.json(newAccount)
+        res.status(200).json({ inserted: newAccount})
     })
     .catch( err => {
-        res.status(500).json({ message: 'Failed to create your account'})
+        res.status(500).json({ error : err.message})
     })
 })
 
@@ -46,13 +46,13 @@ router.put('/:id', (req, res) => {
     db('accounts').update(req.body).where({id})
     .then( up => {
         if(up){
-            res.json(up)
+            res.status(200).json({updated : up})
         } else {
             res.status(404).json({ message: 'Could not find user with that ID'})
         }
     })
     .catch( err => {
-        res.status(500).json({ message: 'Failed to update your account'})
+        res.status(500).json({ error : err.message})
     })
 })
 
@@ -62,13 +62,13 @@ router.delete('/:id', (req, res) => {
     db('accounts').where({id}).del()
     .then( rm => {
         if(rm){
-            res.json(rm)
+            res.status(200).json({deleted : `Account with the id of ${id}`})
         } else {
             res.status(404).json({ message: 'Could not find user with that ID'})   
         }
     })
     .catch( err => {
-        res.status(500).json({ message: 'Failed to delete your account'})  
+        res.status(500).json({ error : err.message}) 
     })
 })
 
