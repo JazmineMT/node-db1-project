@@ -46,7 +46,7 @@ router.put('/:id', (req, res) => {
     db('accounts').update(req.body).where({id})
     .then( up => {
         if(up){
-            res.status(200).json({updated : up})
+            res.status(200).json({message: 'updated successfully'})
         } else {
             res.status(404).json({ message: 'Could not find user with that ID'})
         }
